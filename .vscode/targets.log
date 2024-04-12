@@ -1,0 +1,335 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 4.2.1
+# Built for x86_64-apple-darwin15.5.0
+# Copyright (C) 1988-2016 Free Software Foundation, Inc.
+# License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+ 
+
+# Make data base, printed on Thu Apr 11 15:57:14 2024
+
+# Variables
+
+ 
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# automatic
+?F = $(notdir $?)
+# default
+.SHELLFLAGS := -c
+# environment
+VSCODE_CRASH_REPORTER_PROCESS_TYPE = extensionHost
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# makefile (from 'Makefile', line 5)
+FUSES = -U hfuse:w:0xde:m -U lfuse:w:0xff:m -U efuse:w:0x05:m
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# automatic
+@F = $(notdir $@)
+# makefile
+ 
+CURDIR := /Users/ephraimjosephdelacruz/Desktop/ee109/project
+# makefile
+SHELL = /bin/sh
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en-us","osLocale":"en-us","availableLanguages":{},"_languagePackSupport":true}
+# environment
+_ = /usr/local/bin/make
+# makefile (from 'Makefile', line 1)
+MAKEFILE_LIST :=  Makefile
+# 'override' directive
+GNUMAKEFLAGS := 
+# makefile (from 'Makefile', line 1)
+DEVICE = atmega328p
+# environment
+__CFBundleIdentifier = com.microsoft.VSCode
+# environment
+INFOPATH = /opt/homebrew/share/info:
+# environment
+VSCODE_CWD = /
+# default
+MAKE_HOST := x86_64-apple-darwin15.5.0
+# environment
+PATH = /usr/local/bin:/usr/local/avr/bin:/opt/local/bin:/opt/local/sbin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin
+# makefile (from 'Makefile', line 9)
+AVRDUDE = avrdude $(PROGRAMMER) -p $(DEVICE)
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# default
+.FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
+# environment
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.1Ki4QPtZeO/Listeners
+# automatic
+%F = $(notdir $%)
+# environment
+PWD = /Users/ephraimjosephdelacruz/Desktop/ee109/project
+# default
+.LOADED := 
+# makefile (from 'Makefile', line 3)
+PROGRAMMER = -c Arduino -b 115200 -P /dev/cu.usbmodem1101
+# makefile (from 'Makefile', line 2)
+CLOCK = 16000000
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = undefined
+# environment
+MANPATH = /opt/local/share/man:/opt/homebrew/share/man::
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+HOME = /Users/ephraimjosephdelacruz
+# environment
+HOMEBREW_CELLAR = /opt/homebrew/Cellar
+# environment
+VSCODE_CODE_CACHE_PATH = /Users/ephraimjosephdelacruz/Library/Application Support/Code/CachedData/0ee08df0cf4527e40edc9aa28f4b5bd38bbff2b2
+# environment
+LOGNAME = ephraimjosephdelacruz
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# makefile (from 'Makefile', line 10)
+COMPILE = avr-gcc -Wall -Os -DF_CPU=$(CLOCK) -mmcu=$(DEVICE)
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+MAKELEVEL := 0
+# environment
+XPC_FLAGS = 0x0
+# default
+MAKE = $(MAKE_COMMAND)
+# default
+MAKECMDGOALS := all
+# environment
+SHLVL = 1
+# default
+MAKE_VERSION := 4.2.1
+# environment
+USER = ephraimjosephdelacruz
+# makefile
+.DEFAULT_GOAL := all
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# default
+MAKE_COMMAND := make
+# default
+.VARIABLES := 
+# environment
+TMPDIR = /var/folders/bp/4gx10jwx0pd6877k77n20z000000gn/T/
+# automatic
+*F = $(notdir $*)
+# environment
+VSCODE_IPC_HOOK = /Users/ephraimjosephdelacruz/Library/Application Support/Code/1.85-main.sock
+# environment
+MallocNanoZone = 0
+# makefile
+MAKEFLAGS = pqrR
+# environment
+MFLAGS = -pqrR
+# automatic
+ 
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.6824030.6824036
+# environment
+HOMEBREW_PREFIX = /opt/homebrew
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# automatic
++F = $(notdir $+)
+# environment
+HOMEBREW_REPOSITORY = /opt/homebrew
+# environment
+__CF_USER_TEXT_ENCODING = 0x1F5:0x0:0x0
+# environment
+COMMAND_MODE = unix2003
+# default
+MAKEFILES := 
+# automatic
+<F = $(notdir $<)
+# environment
+LC_ALL = C
+# automatic
+^F = $(notdir $^)
+# default
+SUFFIXES := 
+# default
+.RECIPEPREFIX := 
+# makefile (from 'Makefile', line 4)
+OBJECTS = lab8.o lcd.o
+# environment
+LANG = C
+# environment
+VSCODE_PID = 42200
+# variable set hash-table stats:
+ 
+# Load=74/1024=7%, Rehash=0, Collisions=6/95=6%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# . (device 16777234, inode 11931029): 14 files, no impossibilities.
+
+# 14 files, no impossibilities in 1 directories.
+
+# Implicit Rules
+
+# No implicit rules.
+
+# Files
+
+main.elf: lab8.o lcd.o
+#  Implicit rule search has not been done.
+#  Last modified 2024-04-04 14:58:09.402092934
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from 'Makefile', line 46):
+ 
+	$(COMPILE) -o main.elf $(OBJECTS)
+
+all: main.hex
+#  Command line target.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has been updated.
+#  Successfully updated.
+
+load: all
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 39):
+	bootloadHID main.hex
+
+# Not a target:
+lab8.o:
+#  Implicit rule search has been done.
+#  Last modified 2024-04-04 14:58:09.361696482
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2024-03-22 11:56:09.969143987
+#  File has been updated.
+#  Successfully updated.
+
+cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 60):
+	$(COMPILE) -E main.c
+
+test: test.hex
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 63):
+	$(AVRDUDE) -U flash:w:test.hex:i
+
+# Not a target:
+test.hex:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+.c.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 16):
+	$(COMPILE) -c $< -o $@
+
+# Not a target:
+lcd.o:
+#  Implicit rule search has been done.
+#  Last modified 2024-03-01 11:58:40.186719179
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+clean:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 42):
+	rm -f main.hex main.elf $(OBJECTS)
+
+fuse:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 32):
+	$(AVRDUDE) $(FUSES)
+
+flash: all
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 29):
+	$(AVRDUDE) -U flash:w:main.hex:i
+
+main.hex: main.elf
+#  Implicit rule search has not been done.
+#  Last modified 2024-04-04 14:58:09.422277451
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from 'Makefile', line 49):
+	rm -f main.hex
+	avr-objcopy -j .text -j .data -O ihex main.elf main.hex
+	avr-size --format=avr --mcu=$(DEVICE) main.elf
+
+.c.s:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 26):
+	$(COMPILE) -S $< -o $@
+
+.S.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 19):
+	$(COMPILE) -x assembler-with-cpp -c $< -o $@
+
+disasm: main.elf
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 57):
+	avr-objdump -d main.elf
+
+install: flash fuse
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# files hash-table stats:
+# Load=20/1024=2%, Rehash=0, Collisions=2/42=5%
+# VPATH Search Paths
+
+# No 'vpath' search paths.
+
+# No general ('VPATH' variable) search path.
+
+# strcache buffers: 1 (0) / strings = 29 / storage = 203 B / avg = 7 B
+# current buf: size = 8162 B / used = 203 B / count = 29 / avg = 7 B
+
+# strcache performance: lookups = 58 / hit rate = 50%
+# hash-table stats:
+# Load=29/8192=0%, Rehash=0, Collisions=3/58=5%
+# Finished Make data base on Thu Apr 11 15:57:14 2024
+
+ 
