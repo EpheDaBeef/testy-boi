@@ -29,6 +29,8 @@ volatile uint8_t a, b;
 volatile char x;
 volatile char buf[11];
 volatile int cycles;
+enum state {START, STOP};
+volatile int state = STOP;
 volatile uint16_t pwm_width_timer1 = 3000; // halfway
 const uint16_t MIN_PWM_WIDTH = 1500; // min
 const uint16_t MAX_PWM_WIDTH = 4500; // max
@@ -103,11 +105,17 @@ void timer0_init(void) {
 
 void timer1_init(void) {
     // Set Waveform Generation Mode bits (WGM13 - WGM10) to 1111
-    TCCR1A |= (1 << WGM11) | (1 << WGM10) | (1 << COM1B1);
+   /* TCCR1A |= (1 << WGM11) | (1 << WGM10) | (1 << COM1B1);
     TCCR1B |= (1 << WGM12) | (1 << WGM13);
     OCR1A = 40000;
 	OCR1B = 3000;
-    TCCR1B |= (1 << CS11);
+    TCCR1B |= (1 << CS11); */
+
+	TCCR1B |= (1 << WGM12); // ctc
+    TCCR1B |= (1 << CS11) | (1 << CS10); // 64
+
+	OCR1A = 62499; // overflow
+	TIMSK1 |= (1 << OCIE1A);
     
 }
 
@@ -133,7 +141,7 @@ void variable_delay_us(int delay) {
 }
 
 // Pin Change Interrupt Service Routine (ISR) to handle encoder input bits
-ISR(PCINT1_vect)
+/* ISR(PCINT1_vect)
 {
 	// In Task 6, add code to read the encoder inputs and determine the new
 	// count value
@@ -211,4 +219,54 @@ ISR(PCINT1_vect)
 		changed = 1;
 		old_state = new_state;
 	}
+} */
+
+// Pin Change Interrupt Service Routine (ISR) to handle encoder input bits
+// Pin Change Interrupt Service Routine (ISR) to handle encoder input bits
+ISR(PCINT1_vect)
+{
+    static uint16_t start_time = 0; // Variable to store start time
+    
+    // Check if start sensor is triggered
+    if (!(PINC & (1 << PC4))) {
+        // Start sensor is blocked
+        start_time = 0; // Clear start time
+        TCNT1 = 0; // Reset TIMER1 count register to zero
+        TCCR1B |= (1 << CS11) | (1 << CS10); // Start TIMER1 with prescaler 64
+    }
+    
+    // Check if stop sensor is triggered
+    if (!(PINC & (1 << PC5))) {
+        // Stop sensor is blocked
+        if (start_time != 0) { // Check if start sensor was triggered
+            uint16_t elapsed_time = TCNT1; // Read TIMER1 count register
+            TCCR1B &= ~((1 << CS12) | (1 << CS11) | (1 << CS10)); // Stop TIMER1
+            
+            // Calculate elapsed time in milliseconds using fixed-point arithmetic
+            // Multiply elapsed_time by 1000 and divide by TIMER1's frequency (Hz)
+            uint32_t elapsed_time_ms = (elapsed_time * 1000UL) / (16000000UL / 64);
+            
+            // Calculate speed using distance between sensors
+            // Assuming distance in millimeters and speed in mm/sec
+            // Speed = Distance / Time
+            // For example, if distance is 1000mm and time is 500ms, speed = 1000 / 0.5 = 2000 mm/sec
+            uint32_t distance_mm = /* Distance between start and stop sensors */; // Fill in distance
+            uint32_t speed_mm_per_sec = (distance_mm * 1000UL) / elapsed_time_ms;
+            
+            // Use speed and elapsed time as needed for further processing or display
+            // For now, you can print them to the LCD or serial output
+            
+            // Reset start_time
+            start_time = 0;
+        }
+    }
+    
+    // Check if timing has exceeded 4 seconds
+    if (TCNT1 >= 62499) {
+        // Timing has exceeded 4 seconds, stop TIMER1
+        TCCR1B &= ~((1 << CS12) | (1 << CS11) | (1 << CS10)); // Stop TIMER1
+        
+        // Print message on LCD or serial output indicating timing expired
+        // For example, lcd_stringout("Timing expired");
+    }
 }
