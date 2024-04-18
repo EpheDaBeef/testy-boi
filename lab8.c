@@ -24,7 +24,9 @@ void timer1_init(void);
 
 volatile uint8_t new_state, old_state;
 volatile uint8_t changed = 0;  // Flag for state change
-volatile int16_t count = 0;		// Count to display
+volatile uint8_t sensor_changed = 0;  // Flag for sensor state change
+volatile int16_t count = 0;		// Count for encoder
+volatile int16_t sensor_count, speed, decimal;
 volatile uint8_t a, b;
 volatile char x;
 volatile char buf[11];
@@ -74,23 +76,52 @@ int main(void) {
 	PCMSK1 |= (1 << PCINT12) | (1 << PCINT13);
 
 	
-	while (1) {                 // Loop forever
-		if (changed) {
-			OCR2A = count;
-			OCR1B = pwm_width_timer1;
-			lcd_moveto(1, 0);
-			snprintf(buf, sizeof(buf), "%u", count);
+	while (1) {
+		if (sensor_changed) {
+			sensor_count = (TCNT1 / (62500/4000));
+			speed = (5400)/(sensor_count); // distance between sensors is 5.4cm
+			rs = (5400)%(sensor_count);
+			char buf[13];
+			snprintf(buf, 13, "%3dms = %u.%u    ", cnt, speed, decimal%10);
+			//snprintf(buf, 13, "%3dms = %lu.%lu    ", cnt, speed/10, speed%10);
+			lcd_moveto(0,0);
 			lcd_stringout(buf);
-			changed = 0; // reset flag
-
-			/*if (changed) {
-			OCR2A = count;
-			lcd_moveto(1, 0);
-			snprintf(buf, sizeof(buf), "%d", count);
-			lcd_stringout(buf);
-			changed = 0; // Reset flag
-		} */
+			sensor_changed = 0; // reset flag
 		}
+		if(speed > count){ // change
+				// buzzCNT = 0; 
+				TCCR0B |= ((1 << CS02)); // turn buzzer interrupt on
+			}
+			/*determining */
+			int x = 35 - ((speed*23)/100);
+			if(x < 0){
+				x = 0;
+			}
+			OCR2A = x;
+			OCR1B = 0;
+			if(speed > new_speed/10){
+				PORTB |= (1 << PC3);
+				PORTB &= ~(1 << PC2);
+			}
+			else if(speed < new_speed/10){
+				PORTB |= (1 << PC2);
+				PORTB &= ~(1 << PC3);
+			}
+			else{
+				//then check for the decimal points
+				if(decimal == (new_speed%10)){
+					PORTB &= ~(1 << PC3);
+					PORTB &= ~(1 << PC2);
+				}
+				else if(decimal > (new_speed%10)){
+					PORTC |= (1 << PC3);
+					PORTC &= ~(1 << PC2);
+				}
+				else if(decimal < (new_speed%10)){
+					PORTC |= (1 << PC2);
+					PORTC &= ~(1 << PC3);
+				}
+			}
 	}
 }
 
@@ -103,7 +134,7 @@ void timer1_init(void) {
 	TCCR1B |= (1 << WGM12); // ctc
     TCCR1B |= (1 << CS12) | (1 << CS10); // 1024
 	TIMSK1 |= (1 << OCIE1A); // 16-bit counter
-	OCR1A = 62499; // overflow
+	OCR1A = 62500; // overflow
 	
 }
 
@@ -121,8 +152,39 @@ void variable_delay_us(int delay) {
 		_delay_us(10);
 }
 
-// Pin Change Interrupt Service Routine (ISR) to handle encoder input bits
+// Pin Change Interrupt Service Routine (ISR) to handle sensor input bits
 ISR(PCINT1_vect)
+{
+	x = PINC;
+	a = x & (1 << PC4);
+	b = x & (1 << PC5);
+
+	if (state == STOP){
+		if(!a){
+			state = START;
+			TCNT1 = 0;
+			TCCR1B |= (1 << CS12)|(1 << CS10); // start TIMER1
+			PORTB |= (1 << PB5);
+		}
+		if(!b){
+			state = STOP;
+		}
+	}
+	else if (state == START){
+		if(!a){
+			state = START;
+		}
+		if(!b){
+			TCCR1B &= ~((1 << CS12) | (1 << CS11) | (1 << CS10)); // stop TIMER1
+			PORTB &= ~(1 << PB5);
+			state = STOP;
+			sensor_changed = 1;
+		}
+	}
+}
+
+// Pin Change Interrupt Service Routine (ISR) to handle encoder input bits
+ISR(PCINT2_vect)
 {
 	// In Task 6, add code to read the encoder inputs and determine the new
 	// count value
