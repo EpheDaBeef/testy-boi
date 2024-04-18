@@ -37,11 +37,6 @@ const uint16_t MAX_PWM_WIDTH = 4500; // max
 
 int main(void) {
 
-	// Initialize DDR and PORT registers
-	/* DDRB |= (1 << PB3);
-	DDRB |= (1 << PB2);
-	PORTC |= (1 << PC4) | (1 << PC5);*/
-
 	sei();
 	lcd_init();
 	timer1_init();
@@ -49,7 +44,7 @@ int main(void) {
 	timer0_init();
 
 	// splash screen
-	lcd_moveto(0, 0); lcd_stringout("EE 109 Lab 8");
+	lcd_moveto(0, 0); lcd_stringout("EE 109 Project");
 	lcd_moveto(1,0);  lcd_stringout("Ephraim says hi");
 	_delay_ms(2000);
 	lcd_writecommand(0x01);
@@ -84,7 +79,7 @@ int main(void) {
 			OCR2A = count;
 			OCR1B = pwm_width_timer1;
 			lcd_moveto(1, 0);
-			snprintf(buf, sizeof(buf), "%d", count);
+			snprintf(buf, sizeof(buf), "%u", count);
 			lcd_stringout(buf);
 			changed = 0; // reset flag
 
@@ -104,19 +99,12 @@ void timer0_init(void) {
 }
 
 void timer1_init(void) {
-    // Set Waveform Generation Mode bits (WGM13 - WGM10) to 1111
-   /* TCCR1A |= (1 << WGM11) | (1 << WGM10) | (1 << COM1B1);
-    TCCR1B |= (1 << WGM12) | (1 << WGM13);
-    OCR1A = 40000;
-	OCR1B = 3000;
-    TCCR1B |= (1 << CS11); */
 
 	TCCR1B |= (1 << WGM12); // ctc
-    TCCR1B |= (1 << CS11) | (1 << CS10); // 64
-
+    TCCR1B |= (1 << CS12) | (1 << CS10); // 1024
+	TIMSK1 |= (1 << OCIE1A); // 16-bit counter
 	OCR1A = 62499; // overflow
-	TIMSK1 |= (1 << OCIE1A);
-    
+	
 }
 
 void timer2_init(void)
@@ -127,13 +115,6 @@ void timer2_init(void)
     TCCR2B |= (0b111 << CS20); 
 }
 
-/* void play_note(uint16_t freq)
-{
-    cycles = 2 * freq;
-    OCR1A = 16000000 / (2 * freq);
-    TCCR1B |= (1 << CS10);
-} */
-
 void variable_delay_us(int delay) {
 	int i = (delay + 5) / 10;
 	while (i--)
@@ -141,11 +122,11 @@ void variable_delay_us(int delay) {
 }
 
 // Pin Change Interrupt Service Routine (ISR) to handle encoder input bits
-/* ISR(PCINT1_vect)
+ISR(PCINT1_vect)
 {
 	// In Task 6, add code to read the encoder inputs and determine the new
 	// count value
-	x = PINC;
+	x = PIND;
 	a = x & (1 << PD2);
 	b = x & (1 << PD3);
 
@@ -154,12 +135,10 @@ void variable_delay_us(int delay) {
 		if (a) {
 			new_state = 1;
 			count++;
-			pwm_width_timer1 += 50;
 		}
 		else if (b) {
 			new_state = 3;
 			count--;
-			pwm_width_timer1 -= 50;
 		}
 	}
 	else if (old_state == 1) {
@@ -167,12 +146,10 @@ void variable_delay_us(int delay) {
 		if (!a) {
 			new_state = 0;
 			count--;
-			pwm_width_timer1 -= 50;
 		}
 		else if (b) {
 			new_state = 2;
 			count++;
-			pwm_width_timer1 += 50;
 		}
 	}
 	else if (old_state == 2) {
@@ -180,12 +157,10 @@ void variable_delay_us(int delay) {
 		if (!a) {
 			new_state = 3;
 			count++;
-			pwm_width_timer1 += 50;
 		}
 		else if (!b) {
 			new_state = 1;
 			count--;
-			pwm_width_timer1 -= 50;
 		}
 	}
 	else {   // old_state = 3
@@ -193,80 +168,71 @@ void variable_delay_us(int delay) {
 		if (a) {
 			new_state = 2;
 			count--;
-			pwm_width_timer1 -= 50;
 		}
 		else if (!b) {
 			new_state = 0;
 			count++;
-			pwm_width_timer1 += 50;
 		}
 	}
 
-	if(count > 255){
-		count = 255;
+	if(count > 99){
+		count = 99;
 	}
 	else if (count < 0){
 		count = 0;
 	}
 
-	if (pwm_width_timer1 < MIN_PWM_WIDTH) {
-			pwm_width_timer1 = MIN_PWM_WIDTH;
-		} else if (pwm_width_timer1 > MAX_PWM_WIDTH) {
-			pwm_width_timer1 = MAX_PWM_WIDTH;
-		}
-
 	if (new_state != old_state) {
 		changed = 1;
 		old_state = new_state;
 	}
-} */
+}
 
 // Pin Change Interrupt Service Routine (ISR) to handle encoder input bits
-// Pin Change Interrupt Service Routine (ISR) to handle encoder input bits
-ISR(PCINT1_vect)
-{
-    static uint16_t start_time = 0; // Variable to store start time
+// ISR(PCINT1_vect)
+// {
+//     static uint16_t start_time = 0; // Variable to store start time
     
-    // Check if start sensor is triggered
-    if (!(PINC & (1 << PC4))) {
-        // Start sensor is blocked
-        start_time = 0; // Clear start time
-        TCNT1 = 0; // Reset TIMER1 count register to zero
-        TCCR1B |= (1 << CS11) | (1 << CS10); // Start TIMER1 with prescaler 64
-    }
+//     // Check if start sensor is triggered
+//     if (!(PINC & (1 << PC4))) {
+//         // Start sensor is blocked
+//         start_time = 0; // Clear start time
+//         TCNT1 = 0; // Reset TIMER1 count register to zero
+//         TCCR1B |= (1 << CS11) | (1 << CS10); // Start TIMER1 with prescaler 64
+//     }
     
-    // Check if stop sensor is triggered
-    if (!(PINC & (1 << PC5))) {
-        // Stop sensor is blocked
-        if (start_time != 0) { // Check if start sensor was triggered
-            uint16_t elapsed_time = TCNT1; // Read TIMER1 count register
-            TCCR1B &= ~((1 << CS12) | (1 << CS11) | (1 << CS10)); // Stop TIMER1
+//     // Check if stop sensor is triggered
+//     if (!(PINC & (1 << PC5))) {
+//         // Stop sensor is blocked
+//         if (start_time != 0) { // Check if start sensor was triggered
+//             uint16_t elapsed_time = TCNT1; // Read TIMER1 count register
+//             TCCR1B &= ~((1 << CS12) | (1 << CS11) | (1 << CS10)); // Stop TIMER1
             
-            // Calculate elapsed time in milliseconds using fixed-point arithmetic
-            // Multiply elapsed_time by 1000 and divide by TIMER1's frequency (Hz)
-            uint32_t elapsed_time_ms = (elapsed_time * 1000UL) / (16000000UL / 64);
+//             // Calculate elapsed time in milliseconds using fixed-point arithmetic
+//             // Multiply elapsed_time by 1000 and divide by TIMER1's frequency (Hz)
+//             uint32_t elapsed_time_ms = (elapsed_time * 1000UL) / (16000000UL / 64);
             
-            // Calculate speed using distance between sensors
-            // Assuming distance in millimeters and speed in mm/sec
-            // Speed = Distance / Time
-            // For example, if distance is 1000mm and time is 500ms, speed = 1000 / 0.5 = 2000 mm/sec
-            uint32_t distance_mm = /* Distance between start and stop sensors */; // Fill in distance
-            uint32_t speed_mm_per_sec = (distance_mm * 1000UL) / elapsed_time_ms;
+//             // Calculate speed using distance between sensors
+//             // Assuming distance in millimeters and speed in mm/sec
+//             // Speed = Distance / Time
+//             // For example, if distance is 1000mm and time is 500ms, speed = 1000 / 0.5 = 2000 mm/sec
+//             uint32_t distance_mm = /* Distance between start and stop sensors */; // Fill in distance
+//             uint32_t speed_mm_per_sec = (distance_mm * 1000UL) / elapsed_time_ms;
             
-            // Use speed and elapsed time as needed for further processing or display
-            // For now, you can print them to the LCD or serial output
+//             // Use speed and elapsed time as needed for further processing or display
+//             // For now, you can print them to the LCD or serial output
             
-            // Reset start_time
-            start_time = 0;
-        }
-    }
+//             // Reset start_time
+//             start_time = 0;
+//         }
+//     }
     
-    // Check if timing has exceeded 4 seconds
-    if (TCNT1 >= 62499) {
-        // Timing has exceeded 4 seconds, stop TIMER1
-        TCCR1B &= ~((1 << CS12) | (1 << CS11) | (1 << CS10)); // Stop TIMER1
+//     // Check if timing has exceeded 4 seconds
+//     if (TCNT1 >= 62499) {
+//         // Timing has exceeded 4 seconds, stop TIMER1
+//         TCCR1B &= ~((1 << CS12) | (1 << CS11) | (1 << CS10)); // Stop TIMER1
         
-        // Print message on LCD or serial output indicating timing expired
-        // For example, lcd_stringout("Timing expired");
-    }
-}
+//         // Print message on LCD or serial output indicating timing expired
+//         // For example, lcd_stringout("Timing expired");
+//     }
+// }
