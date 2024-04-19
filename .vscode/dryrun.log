@@ -3,7 +3,6 @@ make: Entering directory '/Users/ephraimjosephdelacruz/Desktop/ee109/testy-boi'
 avr-gcc -Wall -Os -DF_CPU=16000000 -mmcu=atmega328p -c speedtrap_main.c -o speedtrap_main.o
 avr-gcc -Wall -Os -DF_CPU=16000000 -mmcu=atmega328p -c lcd.c -o lcd.o
 avr-gcc -Wall -Os -DF_CPU=16000000 -mmcu=atmega328p -o main.elf speedtrap_main.o lcd.o
- 
 rm -f main.hex
 avr-objcopy -j .text -j .data -O ihex main.elf main.hex
 avr-size --format=avr --mcu=atmega328p main.elf
