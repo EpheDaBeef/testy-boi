@@ -1,6 +1,6 @@
 DEVICE     = atmega328p
 CLOCK      = 16000000
-PROGRAMMER = -c Arduino -b 115200 -P /dev/cu.usbmodem1101
+PROGRAMMER = -c Arduino -b 115200 -P /dev/cu.usbmodem*
 OBJECTS    = lab8.o lcd.o
 FUSES      = -U hfuse:w:0xde:m -U lfuse:w:0xff:m -U efuse:w:0x05:m
 

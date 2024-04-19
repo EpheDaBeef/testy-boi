@@ -7,14 +7,14 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # There is NO WARRANTY, to the extent permitted by law.
  
 
-# Make data base, printed on Thu Apr 11 19:36:11 2024
+# Make data base, printed on Thu Apr 18 03:47:17 2024
 
 # Variables
 
  
 # automatic
- 
 <D = $(patsubst %/,%,$(dir $<))
+ 
 # automatic
 ?F = $(notdir $?)
 # default
@@ -23,6 +23,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 VSCODE_CRASH_REPORTER_PROCESS_TYPE = extensionHost
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
+ 
 # makefile (from 'Makefile', line 5)
 FUSES = -U hfuse:w:0xde:m -U lfuse:w:0xff:m -U efuse:w:0x05:m
 # automatic
@@ -30,13 +31,12 @@ FUSES = -U hfuse:w:0xde:m -U lfuse:w:0xff:m -U efuse:w:0x05:m
 # automatic
 @F = $(notdir $@)
 # makefile
-CURDIR := /Users/ephraimjosephdelacruz/Desktop/ee109/project
+CURDIR := /Users/ephraimjosephdelacruz/Desktop/ee109/testy-boi
 # makefile
 SHELL = /bin/sh
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","osLocale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
- 
 _ = /usr/local/bin/make
 # makefile (from 'Makefile', line 1)
 MAKEFILE_LIST :=  Makefile
@@ -61,16 +61,17 @@ ELECTRON_RUN_AS_NODE = 1
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
-SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.1Ki4QPtZeO/Listeners
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.4A3bsXCwrJ/Listeners
 # automatic
 %F = $(notdir $%)
 # environment
-PWD = /Users/ephraimjosephdelacruz/Desktop/ee109/project
+PWD = /Users/ephraimjosephdelacruz/Desktop/ee109/testy-boi
 # default
 .LOADED := 
 # makefile (from 'Makefile', line 3)
 PROGRAMMER = -c Arduino -b 115200 -P /dev/cu.usbmodem1101
 # makefile (from 'Makefile', line 2)
+ 
 CLOCK = 16000000
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = undefined
@@ -131,13 +132,12 @@ MFLAGS = -pqrR
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
+ 
 XPC_SERVICE_NAME = application.com.microsoft.VSCode.6824030.6824036
 # environment
 HOMEBREW_PREFIX = /opt/homebrew
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
-# environment
-VSCODE_L10N_BUNDLE_LOCATION = 
 # automatic
 +F = $(notdir $+)
 # environment
@@ -156,7 +156,6 @@ LC_ALL = C
 ^F = $(notdir $^)
 # default
 SUFFIXES := 
- 
 # default
 .RECIPEPREFIX := 
 # makefile (from 'Makefile', line 4)
@@ -164,10 +163,10 @@ OBJECTS = lab8.o lcd.o
 # environment
 LANG = C
 # environment
-VSCODE_PID = 46157
+VSCODE_PID = 39126
 # variable set hash-table stats:
  
-# Load=75/1024=7%, Rehash=0, Collisions=6/96=6%
+# Load=74/1024=7%, Rehash=0, Collisions=6/95=6%
 
 # Pattern-specific Variable Values
 
@@ -175,8 +174,7 @@ VSCODE_PID = 46157
 
 # Directories
 
- 
-# . (device 16777234, inode 11931029): 14 files, no impossibilities.
+# . (device 16777231, inode 12513289): 14 files, no impossibilities.
 
 # 14 files, no impossibilities in 1 directories.
 
@@ -188,7 +186,7 @@ VSCODE_PID = 46157
 
 main.elf: lab8.o lcd.o
 #  Implicit rule search has not been done.
-#  Last modified 2024-04-04 14:58:09.402092934
+#  Last modified 2024-04-18 02:15:55.911631758
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 46):
@@ -201,6 +199,7 @@ all: main.hex
 #  File has been updated.
 #  Successfully updated.
 
+ 
 load: all
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -211,17 +210,16 @@ load: all
 # Not a target:
 lab8.o:
 #  Implicit rule search has been done.
-#  Last modified 2024-04-04 14:58:09.361696482
+#  Last modified 2024-04-18 02:15:55.910852161
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2024-03-22 11:56:09.969143987
+#  Last modified 2024-04-18 02:15:55.91048859
 #  File has been updated.
 #  Successfully updated.
- 
 
 cpp:
 #  Implicit rule search has not been done.
@@ -253,7 +251,7 @@ test.hex:
 # Not a target:
 lcd.o:
 #  Implicit rule search has been done.
-#  Last modified 2024-03-01 11:58:40.186719179
+#  Last modified 2024-04-18 02:15:55.911382059
 #  File has been updated.
 #  Successfully updated.
 
@@ -285,8 +283,9 @@ flash: all
 	$(AVRDUDE) -U flash:w:main.hex:i
 
 main.hex: main.elf
+ 
 #  Implicit rule search has not been done.
-#  Last modified 2024-04-04 14:58:09.422277451
+#  Last modified 2024-04-18 02:15:55.911785253
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 49):
@@ -294,7 +293,6 @@ main.hex: main.elf
 	avr-objcopy -j .text -j .data -O ihex main.elf main.hex
 	avr-size --format=avr --mcu=$(DEVICE) main.elf
 
- 
 .c.s:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -335,6 +333,6 @@ install: flash fuse
 # strcache performance: lookups = 58 / hit rate = 50%
 # hash-table stats:
 # Load=29/8192=0%, Rehash=0, Collisions=3/58=5%
-# Finished Make data base on Thu Apr 11 19:36:11 2024
+# Finished Make data base on Thu Apr 18 03:47:17 2024
 
  

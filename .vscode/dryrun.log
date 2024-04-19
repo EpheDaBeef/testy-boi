@@ -1,5 +1,5 @@
 make --dry-run --always-make --keep-going --print-directory
-make: Entering directory '/Users/ephraimjosephdelacruz/Desktop/ee109/project'
+make: Entering directory '/Users/ephraimjosephdelacruz/Desktop/ee109/testy-boi'
 avr-gcc -Wall -Os -DF_CPU=16000000 -mmcu=atmega328p -c lab8.c -o lab8.o
  
 avr-gcc -Wall -Os -DF_CPU=16000000 -mmcu=atmega328p -c lcd.c -o lcd.o
@@ -7,5 +7,5 @@ avr-gcc -Wall -Os -DF_CPU=16000000 -mmcu=atmega328p -o main.elf lab8.o lcd.o
 rm -f main.hex
 avr-objcopy -j .text -j .data -O ihex main.elf main.hex
 avr-size --format=avr --mcu=atmega328p main.elf
-make: Leaving directory '/Users/ephraimjosephdelacruz/Desktop/ee109/project'
+make: Leaving directory '/Users/ephraimjosephdelacruz/Desktop/ee109/testy-boi'
  
