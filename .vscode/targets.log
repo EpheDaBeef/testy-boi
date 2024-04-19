@@ -7,14 +7,14 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # There is NO WARRANTY, to the extent permitted by law.
  
 
-# Make data base, printed on Thu Apr 18 03:47:17 2024
+# Make data base, printed on Fri Apr 19 00:26:21 2024
 
 # Variables
 
  
 # automatic
-<D = $(patsubst %/,%,$(dir $<))
  
+<D = $(patsubst %/,%,$(dir $<))
 # automatic
 ?F = $(notdir $?)
 # default
@@ -54,6 +54,7 @@ VSCODE_CWD = /
 MAKE_HOST := x86_64-apple-darwin15.5.0
 # environment
 PATH = /usr/local/bin:/usr/local/avr/bin:/opt/local/bin:/opt/local/sbin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin
+ 
 # makefile (from 'Makefile', line 9)
 AVRDUDE = avrdude $(PROGRAMMER) -p $(DEVICE)
 # environment
@@ -69,9 +70,8 @@ PWD = /Users/ephraimjosephdelacruz/Desktop/ee109/testy-boi
 # default
 .LOADED := 
 # makefile (from 'Makefile', line 3)
-PROGRAMMER = -c Arduino -b 115200 -P /dev/cu.usbmodem1101
+PROGRAMMER = -c Arduino -b 115200 -P /dev/cu.usbmodem*
 # makefile (from 'Makefile', line 2)
- 
 CLOCK = 16000000
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = undefined
@@ -106,6 +106,7 @@ MAKECMDGOALS := all
 # environment
 SHLVL = 1
 # default
+ 
 MAKE_VERSION := 4.2.1
 # environment
 USER = ephraimjosephdelacruz
@@ -132,12 +133,13 @@ MFLAGS = -pqrR
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
- 
 XPC_SERVICE_NAME = application.com.microsoft.VSCode.6824030.6824036
 # environment
 HOMEBREW_PREFIX = /opt/homebrew
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
+# environment
+VSCODE_L10N_BUNDLE_LOCATION = 
 # automatic
 +F = $(notdir $+)
 # environment
@@ -159,14 +161,14 @@ SUFFIXES :=
 # default
 .RECIPEPREFIX := 
 # makefile (from 'Makefile', line 4)
-OBJECTS = lab8.o lcd.o
+OBJECTS = speedtrap_main.o lcd.o
 # environment
 LANG = C
 # environment
-VSCODE_PID = 39126
+VSCODE_PID = 61931
 # variable set hash-table stats:
  
-# Load=74/1024=7%, Rehash=0, Collisions=6/95=6%
+# Load=75/1024=7%, Rehash=0, Collisions=6/96=6%
 
 # Pattern-specific Variable Values
 
@@ -176,6 +178,7 @@ VSCODE_PID = 39126
 
 # . (device 16777231, inode 12513289): 14 files, no impossibilities.
 
+ 
 # 14 files, no impossibilities in 1 directories.
 
 # Implicit Rules
@@ -184,9 +187,9 @@ VSCODE_PID = 39126
 
 # Files
 
-main.elf: lab8.o lcd.o
+main.elf: speedtrap_main.o lcd.o
 #  Implicit rule search has not been done.
-#  Last modified 2024-04-18 02:15:55.911631758
+#  Last modified 2024-04-18 18:14:54.294131581
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 46):
@@ -199,7 +202,6 @@ all: main.hex
 #  File has been updated.
 #  Successfully updated.
 
- 
 load: all
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -208,16 +210,9 @@ load: all
 	bootloadHID main.hex
 
 # Not a target:
-lab8.o:
-#  Implicit rule search has been done.
-#  Last modified 2024-04-18 02:15:55.910852161
-#  File has been updated.
-#  Successfully updated.
-
-# Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2024-04-18 02:15:55.91048859
+#  Last modified 2024-04-18 15:28:30.320521345
 #  File has been updated.
 #  Successfully updated.
 
@@ -256,6 +251,13 @@ lcd.o:
 #  Successfully updated.
 
 # Not a target:
+speedtrap_main.o:
+#  Implicit rule search has been done.
+#  Last modified 2024-04-18 18:14:54.25154354
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
 .DEFAULT:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -275,6 +277,7 @@ fuse:
 #  recipe to execute (from 'Makefile', line 32):
 	$(AVRDUDE) $(FUSES)
 
+ 
 flash: all
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -283,9 +286,8 @@ flash: all
 	$(AVRDUDE) -U flash:w:main.hex:i
 
 main.hex: main.elf
- 
 #  Implicit rule search has not been done.
-#  Last modified 2024-04-18 02:15:55.911785253
+#  Last modified 2024-04-18 18:14:54.314801043
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 49):
@@ -327,12 +329,12 @@ install: flash fuse
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 29 / storage = 193 B / avg = 6 B
-# current buf: size = 8162 B / used = 193 B / count = 29 / avg = 6 B
+# strcache buffers: 1 (0) / strings = 29 / storage = 213 B / avg = 7 B
+# current buf: size = 8162 B / used = 213 B / count = 29 / avg = 7 B
 
 # strcache performance: lookups = 58 / hit rate = 50%
 # hash-table stats:
 # Load=29/8192=0%, Rehash=0, Collisions=3/58=5%
-# Finished Make data base on Thu Apr 18 03:47:17 2024
+# Finished Make data base on Fri Apr 19 00:26:21 2024
 
  

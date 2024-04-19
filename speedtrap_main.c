@@ -70,6 +70,9 @@ int main(void) {
 	PCICR |= (1 << PCIE1) | (1 << PCIE2);
 	PCMSK1 |= (1 << PCINT12) | (1 << PCINT13);
 	PCMSK2 |= (1 << PCINT18) | (1 << PCINT19);
+
+	// TCCR1B &= ~((1 << CS12)|(1 << CS11)|(1 << CS10)); // hmm
+	// PORTB |= (1 << PB5);
 	
 	while (1) {
 		if (sensor_changed) {
@@ -94,7 +97,7 @@ int main(void) {
 			TCCR0B |= ((1 << CS02)); // turn buzzer interrupt on
 			}
 
-			int y = 35 - ((speed*23)/100); // oops
+			int y = 35 - ((speed*23)/100);
 
 			if(y < 0){
 				y = 0;
@@ -102,30 +105,6 @@ int main(void) {
 
 			OCR2A = y;
 			OCR1B = 0;
-
-			// if(speed > new_speed/10){
-			// 	PORTB |= (1 << PC3);
-			// 	PORTB &= ~(1 << PC2);
-			// }
-			// else if(speed < new_speed/10){
-			// 	PORTB |= (1 << PC2);
-			// 	PORTB &= ~(1 << PC3);
-			// }
-			// else{
-			// 	//then check for the decimal points
-			// 	if(decimal == (new_speed%10)){
-			// 		PORTB &= ~(1 << PC3);
-			// 		PORTB &= ~(1 << PC2);
-			// 	}
-			// 	else if(decimal > (new_speed%10)){
-			// 		PORTC |= (1 << PC3);
-			// 		PORTC &= ~(1 << PC2);
-			// 	}
-			// 	else if(decimal < (new_speed%10)){
-			// 		PORTC |= (1 << PC2);
-			// 		PORTC &= ~(1 << PC3);
-			// 	}
-			// }
 	}
 }
 
@@ -162,28 +141,19 @@ ISR(PCINT1_vect)
 	a = x & (1 << PC4);
 	b = x & (1 << PC5);
 
-	if (state == STOP){
-		if(!a){
-			state = START;
-			TCNT1 = 0;
-			TCCR1B |= (1 << CS12)|(1 << CS10); // start TIMER1
-			PORTB |= (1 << PB5);
-		}
-		if(!b){
-			state = STOP;
-		}
+	if (!a) {
+		state = START;
+		TCNT1 = 0;
+		TCCR1B |= (1 << CS12)|(1 << CS10); // start TIMER1
+		PORTB |= (1 << PB5);
 	}
-	else if (state == START){
-		if(!a){
-			state = START;
-		}
-		if(!b){
-			TCCR1B &= ~((1 << CS12) | (1 << CS10)); // stop TIMER1
-			PORTB &= ~(1 << PB5);
-			sensor_count = (TCNT1 / (62500/4000));
-			state = STOP;
-			sensor_changed = 1;
-		}
+
+	if (!b) {
+		TCCR1B &= ~((1 << CS12) | (1 << CS10)); // stop TIMER1
+		PORTB &= ~(1 << PB5);
+		sensor_count = (TCNT1 / (62500/4000));
+		state = STOP;
+		sensor_changed = 1;
 	}
 }
 
