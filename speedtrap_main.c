@@ -26,6 +26,7 @@ volatile uint16_t encoder_count = 0; // count for encoder
 volatile uint16_t buzzer_count = 0; // count for buzzer
 volatile int16_t sensor_count = 0; // count for sensor
 volatile int16_t speed, new_speed, decimal, expired; // speed values + expired flag
+uint32_t distance_mm, time_ms, speed_mm_per_s, speed_cm_per_s;
 volatile uint8_t a, b, c, d; // photosensor inputs + encoder inputs
 volatile char x,y,z;
 volatile uint16_t motor_width = 50; // halfway
@@ -71,25 +72,78 @@ int main(void) {
 	PCMSK1 |= (1 << PCINT12) | (1 << PCINT13);
 	PCMSK2 |= (1 << PCINT18) | (1 << PCINT19);
 
-	// TCCR1B &= ~((1 << CS12)|(1 << CS11)|(1 << CS10)); // hmm
-	// PORTB |= (1 << PB5);
+	unsigned char eeprom_read;  
+	eeprom_read = eeprom_read_byte((void*)200);    
+	encoder_count = eeprom_read; 
 	
 	while (1) {
 		if (sensor_changed) {
-			speed = (5400)/(sensor_count); // distance between sensors is 5.4cm
-			decimal = (5400)%(sensor_count);
-			char buf[13];
-			snprintf(buf, 13, "%3dms = %u.%u ", sensor_count, speed, decimal%10);
-			lcd_moveto(0,0);
-			lcd_stringout(buf);
-			sensor_changed = 0; // reset flag
-		}
+			// speed = (5400)/(sensor_count); // distance between sensors is 5.4cm
+			// decimal = (5400)%(sensor_count);
+
+			// uint32_t distance_mm = 38; // Distance between sensors in mm (1.5 inches * 25.4)
+			// uint32_t time_ms = (tccnt * 1000) / (15625);
+			// uint32_t speed_mm_per_s = (distance_mm * 1000) / time_ms;
+			// uint32_t speed_cm_per_s = (distance_mm * 100) / time_ms;
+
+			// char buf[13];
+			// snprintf(buf, 13, "%3dms = %u.%u ", sensor_count, speed, decimal%10);
+			// lcd_moveto(0,0);
+			// lcd_stringout(buf);
+
+			stop_time = 0;
+			lcd_writecommand(0x01); 
+
+			uint32_t distance_mm = 38; // Distance between sensors in mm (1.5 inches * 25.4)
+			uint32_t time_ms = (tccnt * 1000) / (15625);
+			uint32_t speed_mm_per_s = (distance_mm * 1000) / time_ms;
+			uint32_t speed_cm_per_s = (distance_mm * 100) / time_ms;
+
+			lcd_moveto(0, 0);
+			lcd_stringout("time= ");
+			lcd_moveto(0, 14);
+			lcd_stringout("ms");
+
+			unsigned char buf_time[20];
+			snprintf(buf_time, 20, "%lu. ", time_ms);
+			lcd_moveto(0, 6); 
+			lcd_stringout(buf_time);
+
+			lcd_moveto(1, 0);
+			lcd_stringout("speed= "); 
+			lcd_moveto(1, 12);
+			lcd_stringout("cm/s");
+			
+			unsigned char buf_speed[20];
+			snprintf(buf_speed, 20, "%lu", speed_cm_per_s); 
+			lcd_moveto(1, 7);   
+			lcd_stringout(buf_speed); 
+
+			unsigned char speed_limit[20];
+			snprintf(speed_limit, 20, "%u", encoder_count);
+			lcd_moveto(0, 11);
+			lcd_stringout(speed_limit);
 
 		if (expired) {
 			lcd_moveto(0,0);
 			lcd_stringout("too late :(");
 			PORTB &= ~(1 << PB5);
 			state = STOP;
+		}
+
+		if (changed) {
+			changed = 0; 
+			lcd_moveto(0, 0);
+			lcd_stringout("speedlimit -  "); 
+			lcd_moveto(1, 12); 
+			lcd_stringout("cm/s"); 
+			lcd_moveto(0, 8);
+			unsigned char buf2[20];
+			snprintf(buf2, 20, "%u", encoder_count);
+			lcd_moveto(1, 0);
+			lcd_stringout("          ");
+			lcd_moveto(1, 0);
+			lcd_stringout(buf2);			
 		}
 
 		if (speed > encoder_count){ // change
