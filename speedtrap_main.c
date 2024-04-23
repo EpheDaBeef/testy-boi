@@ -151,13 +151,13 @@ int main(void) {
 			TCCR0B |= ((1 << CS02)); // turn buzzer interrupt on
 			}
 
-			int y = 35 - ((speed*23)/100);
+			int motor_arm = 35 - ((speed*23)/100);
 
-			if(y < 0){
-				y = 0;
+			if(motor_arm < 0){
+				motor_arm = 0;
 			}
 
-			OCR2A = y;
+			OCR2A = width;
 			OCR1B = 0;
 	}
 }
